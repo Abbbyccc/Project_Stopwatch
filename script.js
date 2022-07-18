@@ -1,5 +1,5 @@
 const display = document.getElementById('watch-diplay')
-const timepaused = document.querySelector('.paused-time')
+const lapTimes = document.querySelector('.lap-time')
 
 let timer;
 let millisecond = 0
@@ -37,11 +37,41 @@ function update() {
 function resetWatch() {
     clearInterval(timer)
     display.innerHTML = '00:00:00:00'
+    removeAllChildNodes(lapTimes)
 }
 
 function pauseWatch() {
     clearInterval(timer)
     const lis = document.createElement('li')
-    lis.innerHTML = display.innerHTML
-    timepaused.append(lis)
+    lis.setAttribute('class', 'laps')
+
+    if (display.innerHTML == '00:00:00:00' || checkExistingLap(display.textContent) == true) {
+        return
+    } else {
+        lis.innerHTML = display.innerHTML
+        lapTimes.append(lis)
+    }
+}
+
+function checkExistingLap(time) {
+    let laps = document.querySelectorAll('.laps')
+    let result
+    if (laps.length == 0) {
+        result = false
+    } else {
+        for (let i = 0; i < laps.length; i++) {
+            if (laps[i].innerHTML == time) {
+                result = true
+            } else {
+                result = false
+            }
+        }
+        return result
+    }
+}
+
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild)
+    }
 }
