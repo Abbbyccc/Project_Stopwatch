@@ -6,17 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     <title>stopwatch</title>
 </head>
 
 <body>
-    <div id="watch-diplay">00:00:00:00</div>
-    <div class="button-container">
-        <button onclick="start()">Start</button>
-        <button onclick="pauseWatch()">Pause</button>
-        <button onclick="resetWatch()">Reset</button>
+    <div class="main-container">
+        <div id="watch-diplay"><span id="time-display">00:</span><span id="time-display">00:</span><span
+                id="time-display">00:</span><span id="time-display">00</span></div>
+        <div class="button-container">
+            <button onclick="start()">Start</button>
+            <button onclick="pauseWatch()">Pause</button>
+            <button onclick="resetWatch()">Reset</button>
+        </div>
+        <ol class="lap-time"></ol>
     </div>
-    <ol class="lap-time"></ol>
     <script src=" script.js"></script>
 </body>
 
