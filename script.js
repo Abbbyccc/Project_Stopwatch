@@ -40,7 +40,7 @@ function update() {
                 id="time-display">${s}:</span><span id="time-display">${ms}</span>`
 }
 
-function resetWatch() {
+function reset() {
     clearInterval(timer)
     removeAllChildNodes(lapTimes)
     millisecond = 0
@@ -51,8 +51,12 @@ function resetWatch() {
 
 }
 
-function pauseWatch() {
+function pause() {
     clearInterval(timer)
+
+}
+
+function lap() {
     const lis = document.createElement('li')
     lis.setAttribute('class', 'laps')
 
