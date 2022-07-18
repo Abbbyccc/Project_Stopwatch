@@ -35,7 +35,6 @@ function update() {
     let s = second < 10 ? "0" + second : second;
     let ms = millisecond < 10 ? "00" + millisecond : millisecond < 100 ? "0" + millisecond : millisecond;
 
-    // display.innerHTML = `${h}:${m}:${s}:${ms}`
     display.innerHTML = `<span id = "time-display" > ${h}:</span ><span id="time-display">${m}:</span><span
                 id="time-display">${s}:</span><span id="time-display">${ms}</span>`
 }

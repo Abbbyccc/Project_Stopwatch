@@ -4,7 +4,7 @@ body {
 }
 
 #watch-diplay {
-    font-size: 7rem;
+    font-size: 7.5rem;
     color: white;
     display: flex;
     flex-direction: row;
@@ -12,6 +12,7 @@ body {
 
 #time-display {
     width: 180px;
+    padding-left: 1rem;
 }
 
 #time-display:last-child {
@@ -29,6 +30,7 @@ body {
 .lap-time {
     color: white;
     font-size: 1.5rem;
+
 }
 
 button {
