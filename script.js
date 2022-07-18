@@ -1,7 +1,7 @@
 const display = document.getElementById('watch-diplay')
 const lapTimes = document.querySelector('.lap-time')
 
-let timer;
+let timer = null;
 let millisecond = 0
 let second = 0
 let minute = 0
@@ -9,7 +9,11 @@ let hour = 0
 
 
 function start() {
+    if (timer !== null) {
+        clearInterval(timer);
+    }
     timer = setInterval(update, 10)
+
 }
 
 function update() {
@@ -38,8 +42,13 @@ function update() {
 
 function resetWatch() {
     clearInterval(timer)
-    display.innerHTML = '00:00:00:00'
     removeAllChildNodes(lapTimes)
+    millisecond = 0
+    second = 0
+    minute = 0
+    hour = 0
+    display.innerHTML = '00:00:00:00'
+
 }
 
 function pauseWatch() {
@@ -62,7 +71,7 @@ function checkExistingLap(time) {
         result = false
     } else {
         for (let i = 0; i < laps.length; i++) {
-            if (laps[i].innerHTML == time) {
+            if (laps[i].textContent == time) {
                 result = true
             } else {
                 result = false
