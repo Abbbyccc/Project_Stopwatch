@@ -1,6 +1,7 @@
 const display = document.getElementById('watch-diplay')
 const lapTimes = document.querySelector('.lap-time')
 
+
 let timer = null;
 let millisecond = 0
 let second = 0
@@ -39,15 +40,14 @@ function update() {
                 id="time-display">${s}:</span><span id="time-display">${ms}</span>`
 }
 
+
 function reset() {
     clearInterval(timer)
-    removeAllChildNodes(lapTimes)
     millisecond = 0
     second = 0
     minute = 0
     hour = 0
     display.innerHTML = '00:00:00:00'
-
 }
 
 function pause() {
@@ -58,14 +58,34 @@ function pause() {
 function lap() {
     const lis = document.createElement('li')
     lis.setAttribute('class', 'laps')
-
-    if (display.innerHTML == '00:00:00:00' || checkExistingLap(display.textContent) == true) {
+    const localLogs = JSON.parse(localStorage.getItem('localLogs')) || []
+    if (display.textContent == '00:00:00:00' || checkExistingLap(display.textContent) == true) {
         return
     } else {
         lis.innerHTML = display.innerHTML
+        localLogs.push(lis.innerHTML)
+        localStorage.setItem('localLogs', JSON.stringify(localLogs))
+        lapTimes.append(lis)
+
+    }
+}
+
+window.onload = function () {
+    const savedLogs = JSON.parse(localStorage.getItem('localLogs'))
+    for (let i = 0; i < savedLogs.length; i++) {
+        const lis = document.createElement('li')
+        lis.setAttribute('class', 'laps')
+        lis.innerHTML = savedLogs[i]
         lapTimes.append(lis)
     }
 }
+
+function clearLap() {
+    window.localStorage.removeItem('localLogs');
+    removeAllChildNodes(lapTimes)
+}
+
+
 
 function checkExistingLap(time) {
     let laps = document.querySelectorAll('.laps')
