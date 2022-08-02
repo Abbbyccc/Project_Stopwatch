@@ -47,8 +47,9 @@ function reset() {
     second = 0
     minute = 0
     hour = 0
-    display.innerHTML = '00:00:00:00'
+    display.textContent = '00:00:00:00'
     timer = null
+    displayList = []
 }
 
 //function to pause the timer
@@ -61,6 +62,7 @@ function pause() {
 
 let displayList = []
 let pauseClicked = false
+
 
 
 //function to create the laps and save the data to LocalStorage
