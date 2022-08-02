@@ -13,6 +13,7 @@ function start() {
         return
     }
     timer = setInterval(update, 10)
+    pauseClicked = false
 }
 
 //function to update the timer
@@ -35,7 +36,7 @@ function update() {
     let s = second < 10 ? "0" + second : second;
     let ms = millisecond < 10 ? "00" + millisecond : millisecond < 100 ? "0" + millisecond : millisecond;
 
-    display.innerHTML = `<span id = "time-display" > ${h}:</span ><span id="time-display">${m}:</span><span
+    display.innerHTML = `<span id = "time-display" >${h}:</span ><span id="time-display">${m}:</span><span
                 id="time-display">${s}:</span><span id="time-display">${ms}</span>`
 }
 
@@ -47,26 +48,67 @@ function reset() {
     minute = 0
     hour = 0
     display.innerHTML = '00:00:00:00'
+    timer = null
 }
 
 //function to pause the timer
 function pause() {
     clearInterval(timer)
     timer = null
+    pauseClicked = true
 }
 
-//unction to create the laps and save the data to LocalStorage
+
+let displayList = []
+let pauseClicked = false
+
+
+//function to create the laps and save the data to LocalStorage
 function lap() {
     const lis = document.createElement('li')
+
     lis.setAttribute('class', 'laps')
-    if (display.textContent == '00:00:00:00' || checkExistingLap(display.textContent) == true) {
+    if (display.textContent == '00:00:00:00' || pauseClicked == true) {
         return
     } else {
-        lis.innerHTML = display.innerHTML
-        saveToLocalStorage('localLogs', lis.innerHTML)
-        lapTimes.append(lis)
+        displayList.push(display.textContent)
 
+        if (displayList[1] == null) {
+            console.log(true)
+            lis.textContent = msToStr(strToMs(display.textContent) - strToMs('00:00:00:00'))
+            saveToLocalStorage('localLogs', lis.textContent)
+            lapTimes.append(lis)
+
+        } else {
+            for (let i = 1; i < displayList.length; i++) {
+                lis.textContent = msToStr(strToMs(displayList[i]) - strToMs(displayList[i - 1]))
+
+            }
+            saveToLocalStorage('localLogs', lis.textContent)
+            lapTimes.append(lis)
+        }
     }
+}
+
+// change time string to ms for lap subtract
+function strToMs(s) {
+    const splitStr = s.split(":")
+    return Number(splitStr[0]) * 3600000 + Number(splitStr[1] * 60000) + Number(splitStr[2] * 1000) + Number(splitStr[3]);
+}
+
+//change ms back to time format string
+function msToStr(ms) {
+    let hour = Math.floor(ms / 3600000)
+    let min = Math.floor((ms / 3600000 - hour) * 60)
+    let sec = Math.floor(((ms / 3600000 - hour) * 60 - min) * 60)
+    let msec = Math.round(ms % 1000)
+
+    let h = hour < 10 ? "0" + hour : hour;
+    let m = min < 10 ? "0" + min : min;
+    let s = sec < 10 ? "0" + sec : sec;
+    let msecs = msec < 10 ? "00" + msec : msec < 100 ? "0" + msec : msec;
+
+    return h + ':' + m + ":" + s + ":" + msecs
 }
 
 //function to save data under a key to localStorage
@@ -80,6 +122,7 @@ function saveToLocalStorage(key, data) {
 function clearLap() {
     window.localStorage.removeItem('localLogs');
     removeAllChildNodes(lapTimes)
+    displayList = []
 }
 
 //Call the data from localstorage when refreshing the page
@@ -92,25 +135,6 @@ window.onload = function () {
         lapTimes.append(lis)
     }
 }
-
-//function to check if lap already exist if yes then will not double lap
-function checkExistingLap(time) {
-    let laps = document.querySelectorAll('.laps')
-    let result
-    if (laps.length == 0) {
-        result = false
-    } else {
-        for (let i = 0; i < laps.length; i++) {
-            if (laps[i].textContent == time) {
-                result = true
-            } else {
-                result = false
-            }
-        }
-        return result
-    }
-}
-
 
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
